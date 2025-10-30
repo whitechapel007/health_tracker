@@ -4,7 +4,6 @@ import {
   useState,
   useEffect,
   ReactNode,
-  useCallback,
 } from "react";
 import { VitalsContextType, Vitals, VitalsFormData } from "../types";
 import { storageService } from "../services/storageService";
@@ -24,7 +23,7 @@ export const VitalsProvider = ({ children }: VitalsProviderProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Load vitals for current user
-  const loadVitals = useCallback(() => {
+  const loadVitals = () => {
     if (!currentUser) {
       setVitalsLog([]);
       setIsLoading(false);
@@ -38,35 +37,32 @@ export const VitalsProvider = ({ children }: VitalsProviderProps) => {
     );
     setVitalsLog(stored || []);
     setIsLoading(false);
-  }, [currentUser]);
+  };
 
   // Load vitals when user changes
   useEffect(() => {
     loadVitals();
-  }, [loadVitals]);
+  }, []);
 
   // Add vitals entry
-  const addVitals = useCallback(
-    (data: VitalsFormData) => {
-      if (!currentUser) return;
+  const addVitals = (data: VitalsFormData) => {
+    if (!currentUser) return;
 
-      const newVitals: Vitals = {
-        id: generateId(),
-        systolic: Number(data.systolic),
-        diastolic: Number(data.diastolic),
-        heartRate: Number(data.heartRate),
-        weight: Number(data.weight),
-        timestamp: new Date().toISOString(),
-        createdAt: Date.now(),
-      };
+    const newVitals: Vitals = {
+      id: generateId(),
+      systolic: Number(data.systolic),
+      diastolic: Number(data.diastolic),
+      heartRate: Number(data.heartRate),
+      weight: Number(data.weight),
+      timestamp: new Date().toISOString(),
+      createdAt: Date.now(),
+    };
 
-      // Add to beginning for reverse chronological order
-      const updated = [newVitals, ...vitalsLog];
-      setVitalsLog(updated);
-      storageService.setItem(STORAGE_KEYS.VITALS(currentUser), updated);
-    },
-    [currentUser, vitalsLog]
-  );
+    // Add to beginning for reverse chronological order
+    const updated = [newVitals, ...vitalsLog];
+    setVitalsLog(updated);
+    storageService.setItem(STORAGE_KEYS.VITALS(currentUser), updated);
+  };
 
   return (
     <VitalsContext.Provider

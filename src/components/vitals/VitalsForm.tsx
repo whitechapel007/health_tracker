@@ -31,10 +31,11 @@ const VitalsForm = () => {
           Log Vital Signs
         </h3>
       }
+      className="min-h-[500px]"
     >
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-5 md:p-6  space-y-8 transition-all duration-200"
+        className="bg-white   space-y-8 transition-all duration-200"
       >
         {/* Section: Blood Pressure */}
         <section>

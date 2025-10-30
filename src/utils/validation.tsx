@@ -1,4 +1,4 @@
-import { MedicationFormData, VitalsFormData, FormErrors } from "../types";
+import { MedicationFormData, VitalsFormData, FormErrors, User } from "../types";
 import { VALIDATION } from "./constants";
 
 /**
@@ -94,9 +94,44 @@ export const validateVitals = (
   return errors;
 };
 
-/**
- * Check if form has any errors
- */
-export const hasErrors = <T,>(errors: FormErrors<T>): boolean => {
-  return Object.keys(errors).length > 0;
+export const validateLogin = (data: User): FormErrors<User> => {
+  const errors: FormErrors<User> = {};
+  const trimmed = data.username.trim();
+
+  //  Empty check
+  if (!trimmed) {
+    errors.username = "Username is required";
+    return errors;
+  }
+
+  //  Leading or trailing whitespace
+  if (data.username !== trimmed) {
+    errors.username = "Username cannot start or end with spaces";
+    return errors;
+  }
+
+  //  Length check
+  if (trimmed.length < 3) {
+    errors.username = "Username must be at least 3 characters long";
+  } else if (trimmed.length > 20) {
+    errors.username = "Username cannot exceed 20 characters";
+  }
+
+  //  Character restrictions
+  if (/[^a-zA-Z0-9_]/.test(trimmed)) {
+    errors.username =
+      "Username can only contain letters, numbers, and underscores";
+  }
+
+  //  No consecutive underscores
+  if (/__/.test(trimmed)) {
+    errors.username = "Username cannot contain consecutive underscores";
+  }
+
+  //  Must start with a letter
+  if (!/^[A-Za-z]/.test(trimmed)) {
+    errors.username = "Username must start with a letter";
+  }
+
+  return errors;
 };

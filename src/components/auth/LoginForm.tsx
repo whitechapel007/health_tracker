@@ -1,31 +1,26 @@
-import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import Button from "../common/Button";
 import Input from "../common/Input";
 import Card from "../common/Card";
 import { Heart } from "lucide-react";
+import { useForm } from "../../hooks/useForm";
+import { User } from "../../types";
+import { validateLogin } from "../../utils/validation";
+
+const initialValues: User = {
+  username: "",
+};
 
 const LoginForm = () => {
   const { login } = useAuth();
-  const [username, setUsername] = useState("");
-  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const trimmed = username.trim();
-    if (!trimmed) {
-      setError("Username is required");
-      return;
+  const { values, errors, handleChange, handleBlur, handleSubmit } = useForm(
+    initialValues,
+    validateLogin,
+    (data) => {
+      login(data.username);
     }
-
-    if (trimmed.length < 2) {
-      setError("Username must be at least 2 characters");
-      return;
-    }
-
-    login(trimmed);
-  };
+  );
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-6">
@@ -45,9 +40,9 @@ const LoginForm = () => {
           </p>
         </div>
 
-        {/* Card Form */}
+        {/* Login Card */}
         <Card className="p-6 border border-gray-100 shadow-sm">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
             <div className="text-center">
               <h2 className="text-lg font-medium text-gray-800">
                 Welcome Back
@@ -57,20 +52,21 @@ const LoginForm = () => {
               </p>
             </div>
 
+            {/* Username Input */}
             <Input
               id="username"
+              name="username"
               label="Username"
               type="text"
-              value={username}
-              onChange={(e) => {
-                setUsername(e.target.value);
-                setError("");
-              }}
-              error={error}
               placeholder="Enter your username"
+              value={values.username}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.username}
               autoFocus
             />
 
+            {/* Submit Button */}
             <Button
               type="submit"
               className="w-full bg-linear-to-r from-pink-500 to-rose-500 text-white font-medium hover:from-pink-600 hover:to-rose-600 transition-all"

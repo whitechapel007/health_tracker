@@ -4,7 +4,6 @@ import {
   useState,
   useEffect,
   ReactNode,
-  useCallback,
 } from "react";
 import {
   MedicationContextType,
@@ -30,7 +29,7 @@ export const MedicationProvider = ({ children }: MedicationProviderProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Load medications for current user
-  const loadMedications = useCallback(() => {
+  const loadMedications = () => {
     if (!currentUser) {
       setMedications([]);
       setIsLoading(false);
@@ -44,44 +43,38 @@ export const MedicationProvider = ({ children }: MedicationProviderProps) => {
     );
     setMedications(stored || []);
     setIsLoading(false);
-  }, [currentUser]);
+  };
 
   // Load medications when user changes
   useEffect(() => {
     loadMedications();
-  }, [loadMedications]);
+  }, []);
 
   // Add medication
-  const addMedication = useCallback(
-    (data: MedicationFormData) => {
-      if (!currentUser) return;
+  const addMedication = (data: MedicationFormData) => {
+    if (!currentUser) return;
 
-      const newMedication: Medication = {
-        id: generateId(),
-        name: data.name.trim(),
-        dosage: data.dosage.trim(),
-        frequency: data.frequency.trim(),
-        createdAt: Date.now(),
-      };
+    const newMedication: Medication = {
+      id: generateId(),
+      name: data.name.trim(),
+      dosage: data.dosage.trim(),
+      frequency: data.frequency.trim(),
+      createdAt: Date.now(),
+    };
 
-      const updated = [...medications, newMedication];
-      setMedications(updated);
-      storageService.setItem(STORAGE_KEYS.MEDICATIONS(currentUser), updated);
-    },
-    [currentUser, medications]
-  );
+    const updated = [...medications, newMedication];
+    setMedications(updated);
+    storageService.setItem(STORAGE_KEYS.MEDICATIONS(currentUser), updated);
+  };
 
   // Remove medication
-  const removeMedication = useCallback(
-    (id: string) => {
-      if (!currentUser) return;
+  const removeMedication = (id: string) => {
+    if (!currentUser) return;
 
-      const updated = medications.filter((med) => med.id !== id);
-      setMedications(updated);
-      storageService.setItem(STORAGE_KEYS.MEDICATIONS(currentUser), updated);
-    },
-    [currentUser, medications]
-  );
+    const updated = medications.filter((med) => med.id !== id);
+    setMedications(updated);
+    storageService.setItem(STORAGE_KEYS.MEDICATIONS(currentUser), updated);
+  };
 
   return (
     <MedicationContext.Provider

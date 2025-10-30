@@ -6,7 +6,7 @@ export const STORAGE_KEYS = {
 } as const;
 
 // Idle timeout in milliseconds (10 minutes)
-export const IDLE_TIMEOUT = 10 * 60 * 1000;
+export const IDLE_TIMEOUT = 5 * 60 * 1000;
 
 export const WARNING_INACTIVITY_TIMEOUT_MS = 9 * 60 * 1000;
 

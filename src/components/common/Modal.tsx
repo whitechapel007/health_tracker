@@ -17,14 +17,6 @@ const Modal = ({
         <div className="bg-white rounded-md shadow-lg p-6">
           {title && <h3 className="text-lg font-semibold mb-3">{title}</h3>}
           {children}
-          <div className="mt-4 text-right">
-            <button
-              onClick={onClose}
-              className="text-sm text-slate-600 hover:underline"
-            >
-              Close
-            </button>
-          </div>
         </div>
       </div>
     </div>

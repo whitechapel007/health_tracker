@@ -60,7 +60,7 @@ const Dashboard = () => {
                 <VitalsForm />
               </div>
 
-              <div className=" shadow-sm hover:shadow-md transition-all duration-300">
+              <div className=" ">
                 <VitalsLog />
               </div>
             </div>

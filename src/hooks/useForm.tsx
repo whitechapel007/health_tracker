@@ -11,7 +11,7 @@ export const useForm = <T extends Record<string, any>>(
 ) => {
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<FormErrors<T>>({});
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [, setTouched] = useState<Record<string, boolean>>({});
 
   // Handle input change
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +80,6 @@ export const useForm = <T extends Record<string, any>>(
   return {
     values,
     errors,
-    touched,
     handleChange,
     handleBlur,
     handleSubmit,
