@@ -1,0 +1,107 @@
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useCallback,
+} from "react";
+import {
+  MedicationContextType,
+  Medication,
+  MedicationFormData,
+} from "../types";
+import { storageService } from "../services/storageService";
+import { STORAGE_KEYS } from "../utils/constants";
+import { generateId } from "../utils/formatters";
+import { useAuth } from "./AuthContext";
+
+const MedicationContext = createContext<MedicationContextType | undefined>(
+  undefined
+);
+
+interface MedicationProviderProps {
+  children: ReactNode;
+}
+
+export const MedicationProvider = ({ children }: MedicationProviderProps) => {
+  const { currentUser } = useAuth();
+  const [medications, setMedications] = useState<Medication[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load medications for current user
+  const loadMedications = useCallback(() => {
+    if (!currentUser) {
+      setMedications([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+
+    const stored = storageService.getItem<Medication[]>(
+      STORAGE_KEYS.MEDICATIONS(currentUser)
+    );
+    setMedications(stored || []);
+    setIsLoading(false);
+  }, [currentUser]);
+
+  // Load medications when user changes
+  useEffect(() => {
+    loadMedications();
+  }, [loadMedications]);
+
+  // Add medication
+  const addMedication = useCallback(
+    (data: MedicationFormData) => {
+      if (!currentUser) return;
+
+      const newMedication: Medication = {
+        id: generateId(),
+        name: data.name.trim(),
+        dosage: data.dosage.trim(),
+        frequency: data.frequency.trim(),
+        createdAt: Date.now(),
+      };
+
+      const updated = [...medications, newMedication];
+      setMedications(updated);
+      storageService.setItem(STORAGE_KEYS.MEDICATIONS(currentUser), updated);
+    },
+    [currentUser, medications]
+  );
+
+  // Remove medication
+  const removeMedication = useCallback(
+    (id: string) => {
+      if (!currentUser) return;
+
+      const updated = medications.filter((med) => med.id !== id);
+      setMedications(updated);
+      storageService.setItem(STORAGE_KEYS.MEDICATIONS(currentUser), updated);
+    },
+    [currentUser, medications]
+  );
+
+  return (
+    <MedicationContext.Provider
+      value={{
+        medications,
+        addMedication,
+        removeMedication,
+        isLoading,
+      }}
+    >
+      {children}
+    </MedicationContext.Provider>
+  );
+};
+
+// Custom hook to use medication context
+export const useMedication = (): MedicationContextType => {
+  const context = useContext(MedicationContext);
+  if (!context) {
+    throw new Error("useMedication must be used within MedicationProvider");
+  }
+  return context;
+};
