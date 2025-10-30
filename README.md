@@ -1,30 +1,79 @@
-# React + TypeScript + Vite
+# Simple Health Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, intuitive, and responsive single-page web application built with **React**, **TypeScript**, and **Tailwind CSS**.
+This app allows users to **log in**, manage their **medications**, and **track daily vital signs** — with persistent data stored in the browser.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🩺 Project Overview
 
-## Expanding the ESLint configuration
+The **Simple Health Tracker** helps users keep a personal record of:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Medications (name, dosage, frequency)
+- Daily vital signs (blood pressure, heart rate, and weight)
 
-- Configure the top-level `parserOptions` property like this:
+Each user has their own stored data, persisted in **Local Storage**, and is automatically logged out after inactivity.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+---
+
+## ⚙️ Tech Stack
+
+- **React (TypeScript)** – UI library with full type safety
+- **Tailwind CSS** – Utility-first styling for modern, responsive layouts
+- **React Context API** – For lightweight, app-wide state management
+- **Local Storage** – For data persistence
+- **Vite** – Lightning-fast development and build tool
+
+---
+
+## 🧩 Features
+
+### Core Features
+
+- **Medication Management**
+
+  - Add, view, and remove medications
+  - Data persists after page refresh
+
+- **Vital Signs Logging**
+
+  - Log blood pressure, heart rate, and weight
+  - View logs sorted by most recent
+  - Includes timestamps automatically
+
+- **User Authentication**
+  - Simple username-based login (no password)
+  - User-specific data isolation
+  - Auto-logout after 10 minutes of inactivity
+
+### UI & UX
+
+- Clean, modern interface
+- Responsive design for all screen sizes
+- Well-structured components for readability and reusability
+- Smooth form handling and validation
+
+---
+
+## 🗂️ Folder Structure
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Ensure you have **Node.js (v18+)** and **npm** or **yarn** installed.
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/simple-health-tracker.git
+
+# Navigate into the project folder
+cd simple-health-tracker
+
+# Install dependencies
+npm install
 ```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
