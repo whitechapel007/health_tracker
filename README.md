@@ -44,7 +44,7 @@ Each user has their own stored data, persisted in **Local Storage**, and is auto
 - **User Authentication**
   - Simple username-based login (no password)
   - User-specific data isolation
-  - Auto-logout after 10 minutes of inactivity
+  - Auto-logout after 5 minutes of inactivity
 
 ### UI & UX
 
@@ -55,11 +55,9 @@ Each user has their own stored data, persisted in **Local Storage**, and is auto
 
 ---
 
-## 🗂️ Folder Structure
+## test credentials
 
----
-
-## 🚀 Getting Started
+- User1
 
 ### Prerequisites
 
@@ -69,10 +67,10 @@ Ensure you have **Node.js (v18+)** and **npm** or **yarn** installed.
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/simple-health-tracker.git
+git clone https://github.com/whitechapel007/health_tracker
 
 # Navigate into the project folder
-cd simple-health-tracker
+cd health_tracker
 
 # Install dependencies
 npm install
