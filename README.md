@@ -5,6 +5,10 @@ This app allows users to **log in**, manage their **medications**, and **track d
 
 ---
 
+## 🩺 Project Link
+
+[Live Demo](https://roaring-malasada-7ecd61.netlify.app/)
+
 ## 🩺 Project Overview
 
 The **Simple Health Tracker** helps users keep a personal record of:
